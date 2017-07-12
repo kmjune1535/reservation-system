@@ -1,4 +1,4 @@
-package kr.or.connect.reservation.admin.domain;
+package kr.or.connect.reservation.domain;
 
 public class Category {
 
