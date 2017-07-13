@@ -1,87 +1,84 @@
-var interval;
-var timeout;
-var $preB = $('.prev_inn');
-var $nxtB = $('.nxt_inn');
+var sliderModule = (function(){
+	var interval;
+	var timeout;
+	var width = 338;
+	var animationSpeed = 1000;
+	var currentSlide = 1;
+	var automoveAfter = 4000;
 
-var width = 338;
-var animationSpeed = 1000;
-var currentSlide = 1;
-var automoveAfter = 4000;
-
-var $slider = $('#promotion_slider');
-var $slideContainer = $slider.find('ul.visual_img');
-var $slides = $slideContainer.find('li.item');
-
-function sliderInit() {
+	var $slider = $('#promotion_slider');
+	var $slideContainer = $slider.find('ul.visual_img');
+	var $slides = $slideContainer.find('li.item');
 	
-	autoMove();
+	var autoMove = function(){
+		var direction = "-=";
+		var pause = 2000;
+
+		interval = setInterval(function() {
+			sliderModule.imgMove(direction);
+		}, pause);
+	};
 	
-	$preB.on('click', preButtonMove);
-	$nxtB.on('click', nxtButtonMove);
-
-}
-
-function autoMove(){
-	var pause = 2000;
-	var direction = "-=";
-
-	interval = setInterval(function() {
-		imgMove(direction);
-	}, pause);
-};
-
-function stopSlider() {
-	clearInterval(interval);
-};
-
-function preButtonMove() {
-	var direction = "+=";
-	stopTimeout();
-	stopSlider();
-	if(currentSlide===1) {
-		$slideContainer.css('margin-left', -676);
-	}
-	imgMove(direction);
-	restartAutomove();
+	var imgMove = function(direction){
+		$slideContainer.animate({'margin-left': direction+width}, animationSpeed, function(){
+			currentSlide++;
+			if(currentSlide === $slides.length-1) {
+				currentSlide = 1;
+				$slideContainer.css('margin-left', 0);
+			}
+		});
+	};
 	
-	console.log('pre버튼');
-};
-
-function nxtButtonMove() {
-	var direction = "-=";
-	stopTimeout();
-	stopSlider();
-	imgMove(direction);
-	restartAutomove();
+	var stopSlider = function(){
+		clearInterval(interval);
+	};
 	
-	console.log('nex버튼');
-};
-
-function imgMove(direction) {
-	
-	$slideContainer.animate({'margin-left': direction+width}, animationSpeed, function(){
-		currentSlide++;
-		if(currentSlide === $slides.length-1) {
-			currentSlide = 1;
-			$slideContainer.css('margin-left', 0);
+	var preButtonMove = function(){
+		var direction = "+=";
+		sliderModule.stopTimeout();
+		sliderModule.stopSlider();
+		if(currentSlide===1) {
+			$slideContainer.css('margin-left', -676);
 		}
-	});
-};
+		sliderModule.imgMove(direction);
+		sliderModule.restartAutomove();
+	};
+	
+	var nxtButtonMove = function(){
+		var direction = "-=";
+		sliderModule.stopTimeout();
+		sliderModule.stopSlider();
+		sliderModule.imgMove(direction);
+		sliderModule.restartAutomove();
 
-function stopTimeout(){
-	clearTimeout(timeout);
-}
+	};
+	
+	var stopTimeout = function(){
+		clearTimeout(timeout);
+	};
+	
+	var restartAutomove = function(){
+		timeout = setTimeout(function(){ 
+			sliderModule.autoMove(); 
+		}, automoveAfter);
+	};
+	
+	return {
+		autoMove : autoMove,
+		imgMove : imgMove,
+		stopSlider : stopSlider,
+		preButtonMove : preButtonMove,
+		nxtButtonMove : nxtButtonMove,
+		stopTimeout : stopTimeout,
+		restartAutomove : restartAutomove
+	};
+	
+})();
 
-function restartAutomove(){
-	timeout = setTimeout(function(){ 
-		autoMove(); 
-	}, automoveAfter);
-}
+sliderModule.autoMove();
 
-
-
-
-
+$('.prev_inn').on('click', sliderModule.preButtonMove);
+$('.nxt_inn').on('click', sliderModule.nxtButtonMove);
 
 
 

@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no">
     <title>네이버 예약</title>
     <link href="/resources/css/style.css" rel="stylesheet">
+    <script src="/resources/node_modules/handlebars/dist/handlebars.min.js"></script>
 </head>
 
 <body>
@@ -88,6 +89,13 @@
                 <ul class="event_tab_lst tab_lst_min">
                     <li class="item" data-category="0">
                         <a class="anchor active"> <span>전체</span> </a>
+                        	<script id="category_template" type="text/x-handlebars-template">
+                        		{{#categoryList}}
+								<li class="item" data-category=" {{id}} ">
+		    						<a class="anchor {{#if @last}}last{{/if}}"> <span> {{ name }} </span> </a>
+		   						</li>
+								{{/categoryList}}
+							</script>
                     </li>
                 </ul>
             </div>
@@ -96,7 +104,20 @@
                 <div class="wrap_event_box">
                     <!-- [D] lst_event_box 가 2컬럼으로 좌우로 나뉨, 더보기를 클릭할때마다 좌우 ul에 li가 추가됨 -->
                     <ul class="lst_event_box">
-
+					<script id="product_template" type="text/x-handlebars-template">
+						<li class="item">
+    						<a href="#" class="item_book">
+    							<div class="item_preview"> 
+									<img alt="뮤지컬 드림걸즈(DREAMGIRLS) 최초 내한" class="img_thumb" src="https://ssl.phinf.net/naverbooking/20170303_271/1488514705030TuUK4_JPEG/17%B5%E5%B8%B2%B0%C9%C1%EE_%B8%DE%C0%CE%C6%F7%BD%BA%C5%CD_%C3%D6%C1%BE.jpg?type=l591_945">
+    								<span class="img_border"></span> 
+    							</div>
+							<div class="event_txt">
+	    						<h4 class="event_txt_tit"> <span> {{name}} </span> <small class="sm">  {{placeName}}  </small> </h4>
+	    						<p class="event_txt_dsc"> {{description}} </p>
+	            			</div>
+							</a>
+            			</li>
+					</script>
                     </ul>
                     <ul class="lst_event_box">
   
@@ -119,18 +140,9 @@
         </div>
     </footer>
 </body>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <!-- <script src="../js/category.js"></script> 상대경로 안되는 이유??-->
+	<!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
+	<script src="/resources/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/resources/js/category.js"></script>
-    <script src="/resources/js/slider.js"></script>
-    <script src="/resources/js/product.js"></script>
-    
-    <script type="text/javascript">
-	    $(function () { 
-	    	categoryInit(); 
-	    	sliderInit();
-	    	productInit();	
-	    	scrollAuto();
-	    }());    
-    </script>
+    <script src="/resources/js/slider.js"></script>  
+	<script src="/resources/js/product.js"></script>
 </html>
