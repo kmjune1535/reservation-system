@@ -1,4 +1,4 @@
-package kr.or.connect.reservation.admin.dao;
+package kr.or.connect.reservation.dao;
 
 import java.util.Collections;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -15,7 +15,8 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
-import kr.or.connect.reservation.admin.domain.Category;
+import kr.or.connect.reservation.domain.Category;
+import kr.or.connect.reservation.domain.Product;
 
 @Repository
 public class CategoryDAO {
@@ -31,8 +32,12 @@ public class CategoryDAO {
 				.usingGeneratedKeyColumns("id");
 	}
 	
-	public List<Category> selectAll() {
-		return jdbc.query(CategorySqls.SELLECT_ALL, rowMapper);
+	public List<Category> selectCategoriesAll() {
+		try {
+			return jdbc.query(CategorySqls.SELLECT_ALL, rowMapper);
+		}catch(EmptyResultDataAccessException e) {
+			return null;
+		}
 	}
 
 	public Long insertCategory(Category category) {
@@ -49,5 +54,7 @@ public class CategoryDAO {
 		SqlParameterSource params = new BeanPropertySqlParameterSource(category);
 		jdbc.update(CategorySqls.UPDATE_BY_ID, params);
 	}
+
+
 
 }
