@@ -45,6 +45,7 @@ public class ProductDTO {
 	public void setPlaceName(String placeName) {
 		this.placeName = placeName;
 	}
+
 	public String getEvent() {
 		return event;
 	}
@@ -117,7 +118,6 @@ public class ProductDTO {
 	public void setSalesFlag(int salesFlag) {
 		this.salesFlag = salesFlag;
 	}
-	
 	
 	
 	

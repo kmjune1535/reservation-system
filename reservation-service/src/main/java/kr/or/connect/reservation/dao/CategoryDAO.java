@@ -17,6 +17,9 @@ import org.springframework.stereotype.Repository;
 
 import kr.or.connect.reservation.domain.Category;
 
+import kr.or.connect.reservation.domain.Product;
+
+
 @Repository
 public class CategoryDAO {
 	

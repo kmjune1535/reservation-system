@@ -2,6 +2,7 @@ package kr.or.connect.reservation.dao;
 
 public class ProductSqls {
 
+
 	final static String SELECT_ALL = "SELECT p.id, p.name, p.description, d.place_name "
 			 						+ "FROM product p, display_info d "
 			 						+ "WHERE p.id = d.product_id order by p.id";
@@ -24,5 +25,4 @@ public class ProductSqls {
 									+ "WHERE p.id = d.product_id AND p.id = :id";
 	
 	final static String SELECT_IMAGE_ID_BY_PRODUCT_ID = "SELECT id FROM product_image WHERE product_id = :id order by type desc, id asc";
-	
 }

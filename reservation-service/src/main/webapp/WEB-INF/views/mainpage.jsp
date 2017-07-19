@@ -106,6 +106,7 @@
                     <ul class="lst_event_box">
 					<script id="product_template" type="text/x-handlebars-template">
 						<li class="item">
+
     						<a href="/detail/{{id}}" class="item_book">
     							<div class="item_preview"> 
 									<img alt="{{name}}" class="img_thumb" src="/files/{{id}}">

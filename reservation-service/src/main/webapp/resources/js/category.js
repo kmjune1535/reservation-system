@@ -45,3 +45,4 @@ $("ul.tab_lst_min").on('click',  'li.item', CategoryModule.categoryActive);
 
 
 
+

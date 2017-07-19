@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+
 import kr.or.connect.reservation.domain.File;
 import kr.or.connect.reservation.dto.ProductDTO;
 
@@ -19,6 +20,7 @@ import kr.or.connect.reservation.dto.ProductDTO;
 public class ProductDAO {
 
 	private NamedParameterJdbcTemplate jdbc;
+
 	private RowMapper<ProductDTO> productDTORowMapper = BeanPropertyRowMapper.newInstance(ProductDTO.class);
 	private RowMapper<File> fileRowMapper = BeanPropertyRowMapper.newInstance(File.class);
 	
@@ -28,7 +30,9 @@ public class ProductDAO {
 	
 	public List<ProductDTO> selectProductsAll() {
 		try {
+
 			return jdbc.query(ProductSqls.SELECT_ALL, productDTORowMapper);
+
 		}catch(EmptyResultDataAccessException e) {
 			return null;
 		}
@@ -84,5 +88,4 @@ public class ProductDAO {
 			return null;
 		}
 	}
-
 }
