@@ -26,8 +26,8 @@ var DetailModule = (function(){
 	var productDetailtext = function(productDetail){
 		//관람시간, 시작날짜, 끝나는날짜 
 		var productDetailhtml = productDetail.observationTime + "<br>" + productDetail.displayStart + "<br>" + productDetail.displayEnd;
-		$('div.event_info div.in_dsc').text(productDetail.event);
 		$('div.store_details p.dsc').html(productDetailhtml);
+		$('div.event_info div.in_dsc').text(productDetail.event);
 		
 		//장소
 		var $location = $('div.store_addr_wrap');
@@ -45,9 +45,9 @@ var DetailModule = (function(){
 		$additionalService.eq(1).prop('href', 'tel:'+productDetail.tel);
 		$additionalService.eq(2).prop('href', 'mailto:'+productDetail.email);
 		
-		var $productTitle = $('ul.visual_img');
+		var $productTitle = $('ul.visual_img').first();
 		$productTitle.find('.visual_txt_tit').first().text(productDetail.name);
-		$productTitle.find('.visual_txt_dsc').first().text(productDetail.name);
+		$productTitle.find('.visual_txt_dsc').first().text(productDetail.description);
 	}
 	
 	var detailToggling = function(e){
@@ -130,14 +130,11 @@ var DetailModule = (function(){
 	
 })();
 
-
-
-
 var TitleImageModule = (function(){
 	var width = 414;
 	var animationSpeed = 1000;
-	var $slider = $('div.container_visual')
-	var $slideContainer = $slider.find('ul.visual_img');
+	var $slider = $('div.container_visual');
+	var $slideContainer = $slider.find('ul.visual_img').first();
 	var imgNum=1;
 	var imgCount;
 	
@@ -159,7 +156,8 @@ var TitleImageModule = (function(){
 			type : "GET",
 			url : "/products/" + id + "/imageCount",
 			success : function(imageList){
-				var imgCount = imageList.length;
+				imgCount = imageList.length;
+				$('div.figure_pagination').find('span.num.off').text('/ '+imgCount);
 				
 				$.map(imageList, function(image){
 					$slideContainer.append(product_image_template(image));
@@ -170,18 +168,22 @@ var TitleImageModule = (function(){
 	
 	var preButtonMove = function(e){
 		e.preventDefault();
+		if(imgNum <= 1) return;
 		var direction ="+=";
 		CommonModule.imgMove($slideContainer, direction, width, animationSpeed, TitleImageModule.imgMoveAnimate);//재활용
+		imgNum--;
 	}
 	
 	var nxtButtonMove = function(e){
 		e.preventDefault();
+		if(imgNum >= imgCount) return;
 		var direction ="-=";
 		CommonModule.imgMove($slideContainer, direction, width, animationSpeed, TitleImageModule.imgMoveAnimate);
+		imgNum++;
 	}
 	
 	var imgMoveAnimate = function(){
-		if(imgNum < imgCount) imgNum++;
+		$('div.figure_pagination').find('span.num').first().text(imgNum);
 	}
 	
 	return{
@@ -194,9 +196,85 @@ var TitleImageModule = (function(){
 	
 })();
 
+var TouchModule = (function(){
+	
+	var $touchContainer = $('div.group_visual');
+	var $touchImage = $('#product_image_template').closest('div.container_visual');
+	var startX;
+	var moveX;
+	var endX;
+	var width;
+	var imageStartPosition;
+	
+	
+	var init = function(){
+		$($touchContainer).on('touchstart', $touchImage, TouchModule.touchStart);
+		$($touchContainer).on('touchmove', $touchImage, TouchModule.touchMove);
+		$($touchContainer).on('touchend', $touchImage, TouchModule.touchEnd);
+	}
+	
+	var touchStart = function(event){
+		event.preventDefault(); 
+	    var e = event.originalEvent; 
+
+		console.log('터치시~~~작');
+		imageStartPosition = $(this).css('left');
+		console.log(imageStartPosition);
+		startX = e.targetTouches[0].pageX; 
+		
+	}
+	
+	var touchMove = function(event){
+		event.preventDefault(); 
+	    var e = event.originalEvent; 
+	    
+	    var elm = $(this).offset();
+
+		console.log('elm'+elm.left);
+
+		moveX = e.targetTouches[0].pageX; 
+		console.log(moveX);
+		
+		width = moveX - startX;
+		
+		//console.log(imageStartPosition+width);
+		
+		$(this).css('left', width);
+		
+		e.preventDefault();
+		
+	}
+	
+	var touchEnd = function(){
+		console.log('터치끄~~~~읕');
+		if(width>100) {
+			console.log("넘어가랏!");
+			$(this).animate({left: 414}, 'fast'); 
+			//$(this).css('left', 414);
+		}else if(width<-100){
+			//$(this).css('left', imageStartPosition-414);
+			$(this).animate({left: -414}, 'fast');
+		}else{
+			console.log('돌아와랏');
+			$(this).css('left', imageStartPosition);
+		}
+	}
+
+
+	return {
+		init : init,
+		touchStart : touchStart,
+		touchMove : touchMove,
+		touchEnd : touchEnd
+	}
+
+	
+})();
+
 
 $(function(){
 	DetailModule.init();
 	TitleImageModule.init();
+	TouchModule.init();
 })
 

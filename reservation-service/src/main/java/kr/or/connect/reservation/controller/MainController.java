@@ -1,5 +1,7 @@
 package kr.or.connect.reservation.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,13 +14,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class MainController {
 
 	@GetMapping
-	public String main() {
-		return "mainpage";
+	public String main(HttpSession session) {
+		return "/mainpage";
 	}
 	
 	@GetMapping("/myreservation")
-	public String myReservation() {
-		return "myreservation";
+	public String myReservation(HttpSession session) {
+		if(session.getAttribute("userInfo") == null) {
+			String targetPage = "/myreservation";
+			session.setAttribute("targetPage", targetPage);
+			return "redirect:/login";
+		}
+		
+		return "/myreservation";
 	}
 
 	@GetMapping("/detail/{productId}")
@@ -31,7 +39,7 @@ public class MainController {
 	
 	@GetMapping("/review")
 	public String review() {
-		return "review";
+		return "/review";
 	}
 	
 }

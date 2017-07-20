@@ -146,4 +146,5 @@
     <script src="/resources/js/category.js"></script>
     <script src="/resources/js/slider.js"></script>  
 	<script src="/resources/js/product.js"></script>
+	
 </html>

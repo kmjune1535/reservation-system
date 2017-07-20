@@ -37,8 +37,8 @@
                     <div class="pagination">
                         <div class="bg_pagination"></div>
                         <div class="figure_pagination">
-                            <span class="num">1</span>
-                            <span class="num off">/ <span>3</span></span>
+                            <span class="num"></span>
+                            <span class="num off">/ <span></span></span>
                         </div>
                     </div>
                     <div class="group_visual">
@@ -234,4 +234,8 @@
 	<script src="/resources/js/common.js"></script> 
 	<script src="/resources/js/comment.js"></script>
 	<script src="/resources/js/detail.js"></script>  
+	
+
+
+
 </html>
